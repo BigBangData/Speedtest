@@ -114,7 +114,7 @@ if __name__=='__main__':
         
     # save to data dir
     filepath = ''.join([_dir, str(filename), '.json'])
-    with open(str(filepath) + '.json', 'w') as f:
+    with open(filepath, 'w') as f:
         json.dump(_dict, f, indent=4)
                
     print('Json file saved. Exiting now...')    
