@@ -1,10 +1,3 @@
-# author: Marcelo Sanches
-# purpose: test internet connection speeds using speedtest automatically
-# date: 6/5/2020
-# version: 2
-# updates: use -f json flag for speedtest executable to get json directly
-#          redo entire script with better terminology and comments 
-
 import os
 import re
 import json
@@ -52,7 +45,6 @@ def collect_speeds(iters, mins):
     """
     
     # instantiate lists
-    day_list = []
     time_list = []
     upload_list = []
     download_list = []
@@ -68,13 +60,13 @@ def collect_speeds(iters, mins):
         # collect speeds
         print('Performing speed test no.' + str(i+1))
         _dict = get_speedtest_json()
-        down_speed, up_speed = extract_speeds(_dict)
+        download, upload = extract_speeds(_dict)
         
         # add to lists
         print('Adding to speed lists.')
-        upload_list.append(up_speed)
-        download_list.append(down_speed)
-        
+        download_list.append(download)
+        upload_list.append(upload)
+    
         # get dates and times
         now = time.time()
         dt_obj = datetime.fromtimestamp(now)
@@ -84,17 +76,20 @@ def collect_speeds(iters, mins):
         _time = _time.split('.')[0]  
 
         # add to lists
-        print('Adding to datetime lists.')
-        day_list.append(_day)
+        print('Adding to time list.')
         time_list.append(_time)
         
     # gather up lists into a dict
-    data = {'dates':day_list, 
-            'times':time_list,
-            'upload':upload_list,
-            'download':download_list}    
+    _dict = {
+             'day':_day,
+             'data':{
+                     'time':time_list,
+                     'download':download_list,
+                     'upload':upload_list
+                    }
+            }       
     
-    return(data)
+    return(_dict)
 
 
 if __name__=='__main__':
@@ -106,15 +101,20 @@ if __name__=='__main__':
     iters = int(input("Enter number of speed tests: "))
     mins = int(input("Enter max waittime (mins) between tests: "))
     
-    # collect data
-    data = collect_speeds(iters, mins)
-
-    # enrich with location
-    results = {'location':location,
-               'data':data}
+    # collect data, add location
+    _dict = collect_speeds(iters, mins)
+    _dict['location'] = location
     
     print('Writing out json.')
-    with open(str(filename) + '.json', 'w') as f:
-        json.dump(results, f, indent=4)
+    
+    # make data dir if not exists
+    _dir = 'data/'
+    if not os.path.exists(_dir):
+        os.makedirs(_dir)
+        
+    # save to data dir
+    filepath = ''.join([_dir, str(filename), '.json'])
+    with open(str(filepath) + '.json', 'w') as f:
+        json.dump(_dict, f, indent=4)
                
-    print('Json file saved. Exiting now..')
+    print('Json file saved. Exiting now...')    
