@@ -21,8 +21,12 @@ def get_speedtest_json():
         pass
     
     # decode bytes and transform json into a dict
-    _json = stdout.decode('utf-8')
-    _dict = json.loads(_json)
+    try:
+        _json = stdout.decode('utf-8')
+        _dict = json.loads(_json)
+    except json.decoder.JSONDecodeError as e:
+        print(e)
+        pass
     
     return(_dict)
 
