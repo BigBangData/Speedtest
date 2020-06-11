@@ -26,7 +26,8 @@ def get_speedtest_json():
         _json = stdout.decode('utf-8')
         _dict = json.loads(_json)
         return(_dict)
-    except (JSONDecodeError, UnboundLocalError, ValueError):
+    except (json.decoder.JSONDecodeError, UnboundLocalError, ValueError) as e:
+        print(e, flush=True)
         _dict = {}
         return(_dict)
 
@@ -58,43 +59,46 @@ def collect_speeds(iters, mins):
     for i in range(iters):
         
         # wait random num secs for up to mins
-        secs = random.randint(1, 60*mins)
+        secs = random.randint(1, 1*mins)
         print('Loop ' + str(i+1) + ': waiting for ' \
-              + str(secs) + ' secs...')
+              + str(secs) + ' secs...', flush=True)
         time.sleep(secs)
         
         # collect speeds
-        print('Performing speed test no.' + str(i+1))
+        print('Performing speed test no.' + str(i+1), flush=True)
         _dict = get_speedtest_json()
+        print(_dict, flush=True)
+        
         download, upload = extract_speeds(_dict)
         
-        # add to lists
-        print('Adding to speed lists.')
-        download_list.append(download)
-        upload_list.append(upload)
-    
-        # get dates and times
-        now = time.time()
-        dt_obj = datetime.fromtimestamp(now)
+        print(download)
+        ## add to lists
+        #print('Adding to speed lists.', flush=True)
+        #download_list.append(download)
+        #upload_list.append(upload)
+        #
+        ## get dates and times
+        #now = time.time()
+        #dt_obj = datetime.fromtimestamp(now)
+        #
+        ## transform into readable format
+        #_day, _time = str(dt_obj).split(' ')
+        #_time = _time.split('.')[0]  
+        #
+        ## add to lists
+        #print('Adding to time list.', flush=True)
+        #time_list.append(_time)
         
-        # transform into readable format
-        _day, _time = str(dt_obj).split(' ')
-        _time = _time.split('.')[0]  
-
-        # add to lists
-        print('Adding to time list.')
-        time_list.append(_time)
-        
-    # gather up lists into a dict
-    _dict = {
-             'day':_day,
-             'data':{
-                     'time':time_list,
-                     'download':download_list,
-                     'upload':upload_list
-                    }
-            }       
-    
+    ## gather up lists into a dict
+    #_dict = {
+    #         'day':_day,
+    #         'data':{
+    #                 'time':time_list,
+    #                 'download':download_list,
+    #                 'upload':upload_list
+    #                }
+    #        }       
+    #
     return(_dict)
 
 
@@ -157,22 +161,24 @@ if __name__=='__main__':
     
     # collect data, add location, computer name
     _dict = collect_speeds(iters, mins)
-    _dict['location'] = location
-    _dict['computer'] = computer
+    print(_dict, flush=True)
     
-    print('Writing out json.')
-    
-    # make data dir if not exists
-    _dir = 'data/'
-    if not os.path.exists(_dir):
-        os.makedirs(_dir)
-        
-    # get filename
-    filename = extract_filename()
-    
-    # save to data dir
-    filepath = ''.join([_dir, str(filename)])
-    with open(filepath, 'w') as f:
-        json.dump(_dict, f, indent=4)
-               
-    print('Json file saved. Exiting now...')
+    #_dict['location'] = location
+    #_dict['computer'] = computer
+    #
+    #print('Writing out json.', flush=True)
+    #
+    ## make data dir if not exists
+    #_dir = 'data/'
+    #if not os.path.exists(_dir):
+    #    os.makedirs(_dir)
+    #    
+    ## get filename
+    #filename = extract_filename()
+    #
+    ## save to data dir
+    #filepath = ''.join([_dir, str(filename)])
+    #with open(filepath, 'w') as f:
+    #    json.dump(_dict, f, indent=4)
+    #           
+    #print('Json file saved. Exiting now...', flush=True)
