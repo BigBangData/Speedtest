@@ -129,10 +129,11 @@ def collect_info():
     upload_list = []
     download_list = []
     
-    for i in range(10):
+    for i in range(3):
         
         # wait random num secs for up to 5 mins
-        secs = random.randint(10, 300)
+        #secs = random.randint(10, 300)
+        secs = 1
         print('Loop ' + str(i+1) + ': waiting for ' \
               + str(secs) + ' secs...')
         time.sleep(secs)
@@ -198,6 +199,13 @@ if __name__=='__main__':
     _dict['location'] = location
     _dict['computer'] = computer
     
+    # reorder dict
+    keyorder = ['day', 'location', 'computer', 'data']
+
+    final_dict = dict() 
+    for key in keyorder: 
+        final_dict[key] = _dict[key]
+
     print('Writing out json.', flush=True)
     
     # make data dir if not exists
@@ -211,6 +219,6 @@ if __name__=='__main__':
     # save to data dir
     filepath = ''.join([_dir, str(filename)])
     with open(filepath, 'w') as f:
-        json.dump(_dict, f, indent=4)
+        json.dump(final_dict, f, indent=4)
                
     print('Json file saved. Exiting now...', flush=True)
