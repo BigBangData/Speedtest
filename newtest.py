@@ -33,7 +33,10 @@ def get_speedtest_json():
 
 if __name__=="__main__":
     _dict = get_speedtest_json()
-    print(_dict)
+    
+    with open('../jsonfile.json', 'w') as f:
+        json.dump(_dict, f, indent=4)
+
 
 #
 #

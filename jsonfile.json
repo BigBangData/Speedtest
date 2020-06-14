@@ -1,0 +1,19 @@
+{
+    "timestamp": "2020-06-14T02:40:44Z",
+    "ping": {
+        "jitter": 1.067,
+        "latency": 13.771
+    },
+    "download": {
+        "bandwidth": 5718116,
+        "bytes": 46006015,
+        "elapsed": 8103
+    },
+    "upload": {
+        "bandwidth": 762299,
+        "bytes": 4093916,
+        "elapsed": 5404
+    },
+    "packetLoss": 0
+    }
+}
