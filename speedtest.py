@@ -117,9 +117,11 @@ def extract_machineinfo():
         return(name)
     
     
-def collect_info():
-    """Perform 10 speed tests with up to 5 mins of wait time 
-    between them and collect results.
+def collect_info(iters=10, mins=5):
+    """Perform iters speed tests with up to mins mins of waittime 
+    between them and collect results. 
+	
+	Defaults to 10 tests for upto 5 mins of waittime.
     """
     
     # instantiate lists
@@ -129,11 +131,11 @@ def collect_info():
     upload_list = []
     download_list = []
     
-    for i in range(3):
+    for i in range(iters):
         
-        # wait random num secs for up to 5 mins
-        #secs = random.randint(10, 300)
-        secs = 1
+        # wait random num of secs for up to 5 mins
+        secs = random.randint(10, 60*,mins)
+
         print('Loop ' + str(i+1) + ': waiting for ' \
               + str(secs) + ' secs...')
         time.sleep(secs)
@@ -192,7 +194,7 @@ if __name__=='__main__':
     # extract computer name
     computer = extract_machineinfo()
     
-    # collect data
+    # collect data using defaults -- maybe use an argument to specify defaults?
     _dict = collect_info()
     
     # add location, computer name
