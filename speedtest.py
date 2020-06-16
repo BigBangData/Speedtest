@@ -31,21 +31,28 @@ def get_speedtest_json():
         
         # use a default dict
         _dict = {
-                    "day": "2020-06-01",
-                    "data": {
-                        "time": [
-                            "00:00:00"
-                        ],
-                        "download": [
-                            0
-                        ],
-                        "upload": [
-                            0
-                        ]
-                    },
-                    "location": "None",
-                    "computer": "None"
-                }
+                  "day": "2020-06-01",
+                  "location": "None",
+                  "computer": "None",
+                  "router_location": "None",
+                  "data": {
+                      "time": [
+                          "00:00:00"
+                      ],
+                      "jitter": [
+                          0
+                      ],
+                      "latency": [
+                          0
+                      ],
+                      "download": [
+                          0
+                      ],
+                      "upload": [
+                          0
+                      ]
+                  }
+              }
         
         return(_dict)
 
@@ -120,8 +127,8 @@ def extract_machineinfo():
 def collect_info(iters=10, mins=5):
     """Perform iters speed tests with up to mins mins of waittime 
     between them and collect results. 
-	
-	Defaults to 10 tests for upto 5 mins of waittime.
+
+    Defaults to 10 tests for upto 5 mins of waittime.
     """
     
     # instantiate lists
@@ -187,11 +194,14 @@ if __name__=='__main__':
     print("Make sure to git pull before proceeding.\n")
     
     # get user input 
-    # [TODO: sanitize, error check]	
-    location = input("Enter room name: ") 
-    location = location.strip()
+    # [TODO: sanitize, error check]
+    location = input("Enter room name: ")
+    location = location.lower().strip()
+    
+    router_loc = input("Enter router location: ")
+    router_loc = router_loc.lower().strip()
 
-    # extract computer name
+    # extract computer name automagically
     computer = extract_machineinfo()
     
     # collect data using defaults -- maybe use an argument to specify defaults?
@@ -200,9 +210,10 @@ if __name__=='__main__':
     # add location, computer name
     _dict['location'] = location
     _dict['computer'] = computer
+    _dict['router_location'] = router_loc
     
     # reorder dict
-    keyorder = ['day', 'location', 'computer', 'data']
+    keyorder = ['day', 'location', 'computer', 'router_location', 'data']
 
     final_dict = dict() 
     for key in keyorder: 
