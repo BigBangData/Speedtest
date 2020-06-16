@@ -134,7 +134,7 @@ def collect_info(iters=10, mins=5):
     for i in range(iters):
         
         # wait random num of secs for up to 5 mins
-        secs = random.randint(10, 60*,mins)
+        secs = random.randint(10, 60*mins)
 
         print('Loop ' + str(i+1) + ': waiting for ' \
               + str(secs) + ' secs...')
