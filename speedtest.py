@@ -31,6 +31,7 @@ def get_speedtest_json():
         
         # use a default dict
         _dict = {
+                  "test": 0,
                   "day": "2020-06-01",
                   "location": "None",
                   "computer": "None",
@@ -96,7 +97,7 @@ def extract_filename():
     lastdigit = int(filelist[0].split('.')[0][4:6])+1
     filename = ''.join(['test', str(lastdigit), '.json'])
     
-    return(filename)
+    return(lastdigit, filename)
 
 
 def extract_machineinfo():
@@ -169,8 +170,7 @@ def collect_info(iters=10, mins=5):
         _day, _time = str(dt_obj).split(' ')
         _time = _time.split('.')[0]  
 
-        # add to lists
-        print('Adding to time list.')
+        # add to time list
         time_list.append(_time)
         
     # gather up lists into a dict
@@ -204,30 +204,36 @@ if __name__=='__main__':
     # extract computer name automagically
     computer = extract_machineinfo()
     
+    # make data dir if not exists
+    _dir = 'data/'
+    if not os.path.exists(_dir):
+        os.makedirs(_dir)
+       
+    # get lastdigit and filename
+    lastdigit,filename = extract_filename()
+    
     # collect data using defaults -- maybe use an argument to specify defaults?
     _dict = collect_info()
-    
+ 
     # add location, computer name
     _dict['location'] = location
     _dict['computer'] = computer
     _dict['router_location'] = router_loc
+    _dict['test'] = lastdigit
     
     # reorder dict
-    keyorder = ['day', 'location', 'computer', 'router_location', 'data']
+    keyorder = ['test'
+                ,'day'
+                ,'location'
+                ,'computer'
+                ,'router_location'
+                ,'data']
 
     final_dict = dict() 
     for key in keyorder: 
         final_dict[key] = _dict[key]
 
     print('Writing out json.', flush=True)
-    
-    # make data dir if not exists
-    _dir = 'data/'
-    if not os.path.exists(_dir):
-        os.makedirs(_dir)
-        
-    # get filename
-    filename = extract_filename()
     
     # save to data dir
     filepath = ''.join([_dir, str(filename)])

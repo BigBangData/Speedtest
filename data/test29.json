@@ -1,7 +1,9 @@
 {
+    "test": 29,
     "day": "2020-06-15",
     "location": "upper west",
     "computer": "HP ProBook 450 G5",
+    "router_location": "hallway upstairs",
     "data": {
         "time": [
             "18:39:45",

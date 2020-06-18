@@ -1,5 +1,9 @@
 {
+    "test": 27,
     "day": "2020-06-14",
+    "location": "upper east",
+    "computer": "Dell System Inspiron N7110",
+    "router_location": "hallway upstairs",
     "data": {
         "time": [
             "11:27:06",
@@ -37,7 +41,5 @@
             2.71547,
             4.53592
         ]
-    },
-    "location": "upper east",
-    "computer": "Dell System Inspiron N7110"
+    }
 }

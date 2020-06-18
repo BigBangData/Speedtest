@@ -1,5 +1,9 @@
 {
+    "test": 20,
     "day": "2020-06-13",
+    "location": "upper west",
+    "computer": "Inspiron 13-5378",
+    "router_location": "living room west corner",
     "data": {
         "time": [
             "12:14:38",
@@ -37,7 +41,5 @@
             7.4535,
             5.407696
         ]
-    },
-    "location": "upper west",
-    "computer": "Inspiron 13-5378"
+    }
 }

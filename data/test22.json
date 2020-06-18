@@ -1,5 +1,9 @@
 {
+    "test": 22,
     "day": "2020-06-13",
+    "location": "lower west",
+    "computer": "HP ProBook 4530s",
+    "router_location": "living room west corner",
     "data": {
         "time": [
             "14:02:31",
@@ -37,7 +41,5 @@
             8.663368,
             5.916283
         ]
-    },
-    "location": "lower west",
-    "computer": "HP ProBook 4530s"
+    }
 }
