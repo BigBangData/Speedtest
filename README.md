@@ -1,7 +1,7 @@
 # Speedtest
 
 Having recently moved into a new location, my current setup includes a separate router. 
-The Belkin router is a bit outdated so I'm testing average speeds throughout the house using a quick [Python script]('./speedtest.py') that calls [ookla's speedtest executable](https://www.speedtest.net/apps/desktop) to run speed tests. 
+The Belkin router is a bit outdated so I'm testing average speeds throughout the house using a quick [Python script](speedtest.py) that calls [ookla's speedtest executable](https://www.speedtest.net/apps/desktop) to run speed tests. 
 
 
 
@@ -9,7 +9,7 @@ The Belkin router is a bit outdated so I'm testing average speeds throughout the
 
 The script is run with no arguments - you're prompted for information instead:
 
-```shell
+```bash
 $ python speedtest.py
 Make sure to git pull before proceeding.
 
@@ -32,7 +32,7 @@ The script can be customized of course, but as is, it doesn't accept different n
 def collect_info(iters=10, mins=5):
     """Perform iters speed tests with up to mins mins of wait 
     time between them and collect results.
-	"""
+    """
 ```
 
 The data collected is a JSON file with the following fields - here as an example run with only two tests (two iterations of `collect_info` above):
@@ -72,5 +72,30 @@ The data collected is a JSON file with the following fields - here as an example
 ## Data Wrangling and Visualization
 
 
-With a few custom data wrangling and plotting functions (see [custom module]('./custom_module.py')) I can get a sense of the variation in 
+With a few custom data wrangling and plotting functions (see [custom module](custom_module.py)) I can get a sense of the variation in download speeds (most of my concern). [This notebook](plot_speedtest.ipynb) captures some of this work.
+
+I wrangle the data into this format, where the key `data` is the JSON collected during the script run:
+
+<img src="img/dataframe_sample.png" width="400" height="300"/>
+
+I can plot a single run of the script and plot some details about the speeds given each test:
+
+<img src="img/plot_single.png" width="800" height="400"/>
+
+Since this is too much detail for a broader understanding of variation - I can use heatmaps or boxplots and show slices of the data by location
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
