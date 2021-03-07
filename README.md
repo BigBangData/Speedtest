@@ -74,18 +74,31 @@ With a few custom data wrangling and plotting functions (see [custom module](cus
 
 The JSON can be brought in for analysis as a Pandas DataFrame, which is flexible enough to accommodate nested dict structures (i.e. the "data"):
 
-<img src="img/dataframe_sample.PNG" width="400" height="300"/>
+<img src="img/dataframe_sample.PNG" width="700" height="200"/>
 
-I can plot a single run of the script and plot some details about the speeds given each test:
+We can plot a single run of the script and see details about the speeds given each test:
 
 <img src="img/plot_single.PNG" width="800" height="400"/>
 
-Since this is too much detail for a broader understanding of variation - I can use heatmaps or boxplots and show slices of the data by location
+Since this is too much detail for a broader understanding of variation - I use heatmaps and boxplots to delve into slices of the data.
 
+The heatmap shows brighter colors for higher download speeds. Each column is a given test run (or "data collection/ingestion") and each row a particular speed test's download speed result in Mbps (visualized as color).
 
-TODO: revise boxplots - dissociate location of computer vs router location!
+<img src="img/heatmap.PNG" width="800" height="300"/>
 
+Boxplots are great for showing `within` and `in-between` comparisons of the variation in speeds, given a dimension such as "location of the laptop":
 
+<img src="img/speeds_given_laptop_location.PNG" width="800" height="440"/>
+
+However, there are significant confounders to this simplified view since I moved the router location and used different computers. The notebook goes into the details.
+
+## Conclusion
+
+Suffice to say, I did not collect enough samples for a robust stratified analysis but got enough observations to satisfy my curiosity and needs.
+
+The most surprising and unfortunate result of this effort was that the variation in speeds is a lot greater than one would wish for, so our common sense attribution of a particular "cause" (such as time of day, router location, etc.) to a particular "outcome" (bad download speed) is probably more of a story we like to tell than a truth. The reality is that what drives most of the variation in speeds is most probably chance and ISP conditions out of our control.
+
+---
 
 
 
