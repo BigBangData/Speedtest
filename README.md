@@ -83,6 +83,8 @@ I can plot a single run of the script and plot some details about the speeds giv
 Since this is too much detail for a broader understanding of variation - I can use heatmaps or boxplots and show slices of the data by location
 
 
+TODO: revise boxplots - dissociate location of computer vs router location!
+
 
 
 
