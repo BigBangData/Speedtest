@@ -3,8 +3,6 @@
 Having recently moved into a new location, my current setup includes a separate router. 
 The Belkin router is a bit outdated so I'm testing average speeds throughout the house using a quick [Python script](speedtest.py) that calls [ookla's speedtest executable](https://www.speedtest.net/apps/desktop) to run speed tests. 
 
-
-
 ## Data Collection
 
 The script is run with no arguments - you're prompted for information instead:
@@ -74,7 +72,7 @@ The data collected is a JSON file with the following fields - here as an example
 
 With a few custom data wrangling and plotting functions (see [custom module](custom_module.py)) I can get a sense of the variation in download speeds (most of my concern). [This notebook](plot_speedtest.ipynb) captures some of this work.
 
-I wrangle the data into this format, where the key `data` is the JSON collected during the script run:
+The JSON can be brought in for analysis as a Pandas DataFrame, which is flexible enough to accommodate nested dict structures (i.e. the "data"):
 
 <img src="img/dataframe_sample.PNG" width="400" height="300"/>
 
