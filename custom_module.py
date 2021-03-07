@@ -62,8 +62,12 @@ def plot_single(df, col):
     plt.ylabel('Mbps')
     plt.show()
     
-def transform_data(df):
+def transform_data(df, row):
     """Wrangle data into a better structure for boxplots.
+    Params
+    ------
+        df: pd.DataFrame, test results
+        row: str, row of interest in the data
     """
 
     lists = []
@@ -72,9 +76,29 @@ def transform_data(df):
     
     for i in df.columns:
         lists.append(df[i]['data']['download'])
-        locs.append(df[i]['location'])
+        locs.append(df[i][row])
         names.append(i)
     np.transpose(lists)
     data = pd.DataFrame(np.transpose(lists), columns=locs)
     
     return(data)
+
+def plot_results(df, row, scale=1):
+    """Boxplots of results for comparing variances.
+    Params
+    ------
+        df: pd.DataFrame, test results
+        row: str, row of interest in the data
+        scale: scale for figsize if needed
+    """
+    
+    plt.rcParams['axes.facecolor'] = 'ghostwhite'
+    plt.figure(figsize=(20*scale, 8*scale))
+    plt.boxplot(df)
+    plt.title(" ".join(["Speeds Given", row]))
+    plt.ylabel("Mbps", fontsize=16)
+    plt.yticks(fontsize=12)
+    plt.xticks(range(1, df.shape[1]+1), 
+               df.columns, 
+               rotation=90, fontsize=12)
+    plt.show()

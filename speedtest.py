@@ -14,7 +14,8 @@ def get_speedtest_json():
     
     # pass a subprocess command to cmd to get json
     try:
-        out = subprocess.Popen(['speedtest.exe', '-f', 'json'],
+        out = subprocess.Popen(['speedtest.exe', 
+                                '-f', 'json'],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT)
         stdout, stderr = out.communicate()
@@ -26,7 +27,8 @@ def get_speedtest_json():
         _json = stdout.decode('utf-8')
         _dict = json.loads(_json)
         return(_dict)
-    except (json.decoder.JSONDecodeError, UnboundLocalError, ValueError) as e:
+    except (json.decoder.JSONDecodeError, 
+            UnboundLocalError, ValueError) as e:
         print(e, flush=True)
         
         # use a default dict
@@ -106,7 +108,8 @@ def extract_machineinfo():
     """
     
     try:
-        out = subprocess.Popen(['wmic', 'csproduct', 'get', 'name'],
+        out = subprocess.Popen(['wmic', 'csproduct', 
+                                'get', 'name'],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT)
         stdout, stderr = out.communicate()
@@ -126,10 +129,10 @@ def extract_machineinfo():
     
     
 def collect_info(iters=10, mins=5):
-    """Perform iters speed tests with up to mins mins of waittime 
-    between them and collect results. 
+    """Perform iters speed tests with up to mins mins of wait 
+    time between them and collect results. 
 
-    Defaults to 10 tests for upto 5 mins of waittime.
+    Defaults to 10 tests for upto 5 mins of wait time.
     """
     
     # instantiate lists
@@ -190,7 +193,7 @@ def collect_info(iters=10, mins=5):
 
 if __name__=='__main__':
     
-    # Make sure to git pull since filename is obtained from data/ 
+    # git pull since filename is obtained from data/ 
     print("Make sure to git pull before proceeding.\n")
     
     # get user input 
@@ -212,7 +215,8 @@ if __name__=='__main__':
     # get lastdigit and filename
     lastdigit,filename = extract_filename()
     
-    # collect data using defaults -- maybe use an argument to specify defaults?
+    # collect data using defaults 
+    # [TODO: try params to specify defaults]
     _dict = collect_info()
  
     # add location, computer name

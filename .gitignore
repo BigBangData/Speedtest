@@ -1,6 +1,5 @@
 # Byte-compiled / optimized / DLL files
-venv/		# Exclude virtual environment
-/__pycache__/	# Exclude the whole folder
+__pycache__/*
 *.py[cod]	# Will match .pyc, .pyo and .pyd files 
 *$py.class
 *.ipynb_checkpoints/*
