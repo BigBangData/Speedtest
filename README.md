@@ -76,11 +76,11 @@ With a few custom data wrangling and plotting functions (see [custom module](cus
 
 I wrangle the data into this format, where the key `data` is the JSON collected during the script run:
 
-<img src="img/dataframe_sample.png" width="400" height="300"/>
+<img src="img/dataframe_sample.PNG" width="400" height="300"/>
 
 I can plot a single run of the script and plot some details about the speeds given each test:
 
-<img src="img/plot_single.png" width="800" height="400"/>
+<img src="img/plot_single.PNG" width="800" height="400"/>
 
 Since this is too much detail for a broader understanding of variation - I can use heatmaps or boxplots and show slices of the data by location
 
