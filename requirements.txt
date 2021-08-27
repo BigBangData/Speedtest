@@ -26,7 +26,7 @@ ipython=7.21.0=py38hd4e2768_0
 ipython_genutils=0.2.0=pyhd3eb1b0_1
 ipywidgets=7.6.3=pyhd3eb1b0_1
 jedi=0.17.0=py38_0
-jinja2=2.11.3=pyhd3eb1b0_0
+jinja2>=2.11.3
 jpeg=9b=hb83a4c4_2
 jsonschema=3.2.0=py_2
 jupyter=1.0.0=py38_7
