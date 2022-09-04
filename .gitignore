@@ -3,3 +3,4 @@ __pycache__/*
 *.py[cod]	# Will match .pyc, .pyo and .pyd files 
 *$py.class
 *.ipynb_checkpoints/*
+*.vscode/*
