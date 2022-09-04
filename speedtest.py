@@ -38,7 +38,7 @@ def get_speedtestjson_():
         json_ = stdout.decode('utf-8')
         dict_ = json.loads(json_)
 
-        return(dict_)
+        return dict_
 
     except (json.decoder.JSONDecodeError,
         UnboundLocalError, ValueError) as e:
@@ -72,7 +72,7 @@ def get_speedtestjson_():
                   }
               }
 
-        return(dict_)
+        return dict_ 
 
 def extract_speeds(dict_):
     """Given a dictionary of results from the speedtest,
@@ -83,7 +83,7 @@ def extract_speeds(dict_):
     upload = dict_['upload']['bytes']/1e6
 
     # return download an upload speeds as a tuple
-    return(download, upload)
+    return download, upload
 
 def extract_ping(dict_):
     """Given a dictionary of results from the speedtest,
@@ -92,14 +92,14 @@ def extract_ping(dict_):
     jitter = dict_['ping']['jitter']
     latency = dict_['ping']['latency']
 
-    return(jitter, latency)
+    return jitter, latency
 
 def create_filename():
     """Create a filename by examining the `data` dir.
     """
     # get list of files and reverse it using a natural key
     try:
-        filelist = os.listdir('data')
+        filelist = [x for x in os.listdir('data') if x != 'deprecated']
         # sorting for 1 to 2+ digits
         filelist.sort(key=lambda x: int(re.sub('\D', '', x)), reverse=True)
         # add one to the lastdigit
@@ -110,7 +110,7 @@ def create_filename():
 
     filename = ''.join(['test', str(lastdigit), '.json'])
 
-    return(lastdigit, filename)
+    return lastdigit, filename
 
 
 def extract_machineinfo():
@@ -132,14 +132,14 @@ def extract_machineinfo():
         clean_names = [x for x in names if x not in remove]
         name = ' '.join([str(x) for x in clean_names]) 
 
-        return(name)
+        return name
 
     except (json.JSONDecodeError, UnboundLocalError, ValueError):
         name = 'No Name'
 
-        return(name)
+        return name
 
-def collect_info(iters=2, mins=1):
+def collect_info(iters, mins):
     """Perform `iters` speed tests with up to `mins` minutes
     of wait time between tests and collect results into a dict.
 
@@ -156,7 +156,7 @@ def collect_info(iters=2, mins=1):
         time.sleep(secs)
 
         # perform the test
-        print(f'Test {i+1} | Contacting to speedtest.net...')
+        print(f'Test {i+1} | Contacting speedtest.net...')
         dict_ = get_speedtestjson_()
         day_, time_ = get_datetime()
         jitter, latency = extract_ping(dict_)
@@ -182,7 +182,7 @@ def collect_info(iters=2, mins=1):
                     }
             }
 
-    return(dict_)
+    return dict_
 
 
 if __name__=='__main__':
@@ -190,13 +190,28 @@ if __name__=='__main__':
     # needs to be up-to-date with any other machine test results
     print("Make sure to `git pull` before proceeding.\n")
 
-    # get user input 
-    # todo: sanitize, error check, use args
-    location = input("Enter room tested: ")
-    location = location.lower().strip()
+    # check for arguments
+    # can't use access_point with new setup since it can vary during testing
+    # todo: sanitize input, more error checks, use argparse
+    example = "Example: \n$ python speedtest.py living_room 5 5"
+    try:
+        location = sys.argv[1]
+        #access_point = sys.argv[2]
+        iters = int(sys.argv[2])
+        mins = int(sys.argv[3])
+    except IndexError as e:
+        print("Got IndexError. Please provide the following arguments:\
+        \nlocation, number of tests, minutes between tests.")
+        print(example)
+        sys.exit(1)
+    except ValueError as e:
+        print(f'Got ValueError. Please provide integers.\n{example}')
+        sys.exit(1)
 
-    access_point = input("Enter access point: ")
-    access_point = access_point.lower().strip()
+    # cleanup input
+    location = location.lower().strip()
+    #access_point = access_point.lower().strip()
+    access_point = "None"
 
     # extract computer name automagically
     computer = extract_machineinfo()
@@ -206,10 +221,10 @@ if __name__=='__main__':
         os.makedirs('data')
 
     # get lastdigit and filename
-    lastdigit,filename = create_filename()
+    lastdigit, filename = create_filename()
 
     # collect data using defaults
-    dict_ = collect_info()
+    dict_ = collect_info(iters, mins)
 
     # add location, computer name
     dict_['location'] = location
@@ -218,20 +233,22 @@ if __name__=='__main__':
     dict_['test'] = lastdigit
 
     # reorder dict
-    keyorder = ['test'
-                ,'day'
-                ,'location'
-                ,'computer'
-                ,'access_point'
-                ,'data']
+    keyorder = [
+        'test'
+        ,'day'
+        ,'location'
+        ,'computer'
+        ,'access_point'
+        ,'data'
+    ]
 
-    finaldict_ = dict() 
+    finaldict_ = dict()
     for key in keyorder: 
         finaldict_[key] = dict_[key]
 
     # save to data dir
     print('Saving all test data...', flush=True)
-    filepath = ''.join(['data', str(filename)])
+    filepath = os.path.join('data', filename)
     with open(filepath, 'w') as f:
         json.dump(finaldict_, f, indent=4)
 
