@@ -134,7 +134,7 @@ def extract_machineinfo():
 
         return(name)
 
-    except (JSONDecodeError, UnboundLocalError, ValueError):
+    except (json.JSONDecodeError, UnboundLocalError, ValueError):
         name = 'No Name'
 
         return(name)
@@ -231,7 +231,7 @@ if __name__=='__main__':
 
     # save to data dir
     print('Saving all test data...', flush=True)
-    filepath = ''.join([_dir, str(filename)])
+    filepath = ''.join(['data', str(filename)])
     with open(filepath, 'w') as f:
         json.dump(finaldict_, f, indent=4)
 
