@@ -1,0 +1,12 @@
+Loop 10: waiting for 29 secs...
+Performing speed test no.10
+Extra data: line 2 column 1 (char 111)
+Traceback (most recent call last):
+  File "speedtest.py", line 109, in <module>
+    _dict = collect_speeds(iters, mins)
+  File "speedtest.py", line 66, in collect_speeds
+    _dict = get_speedtest_json()
+  File "speedtest.py", line 31, in get_speedtest_json
+    return(_dict)
+UnboundLocalError: local variable '_dict' referenced before assignment
+

@@ -1,0 +1,10 @@
+Performing speed test no.1
+Traceback (most recent call last):
+  File "speedtest.py", line 109, in <module>
+    _dict = collect_speeds(iters, mins)
+  File "speedtest.py", line 66, in collect_speeds
+    _dict = get_speedtest_json()
+  File "speedtest.py", line 25, in get_speedtest_json
+    _json = stdout.decode('utf-8')
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xeb in position 80: invalid continuation byte
+
