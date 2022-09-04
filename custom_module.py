@@ -8,32 +8,27 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 def gather_dicts():
-    """Gathers json files into a master dictionary
-    for analysis.
+    """Gathers json files into a master dictionary for analysis.
     """
-
     # instantiate master dict
-    _dict = {}
-
+    dict_ = {}
+    # get list of files
     filelist = os.listdir('data/')
     filelist.sort(key=lambda x: int(re.sub('\D', '', x)))
 
     for i in filelist:
-          
         filepath = os.path.join('data/', i)
         with open(filepath) as fp:
-            _json = json.load(fp)
-            
+            json_ = json.load(fp)
         # get name for naming each dict
-        name = i.split('.')[0]        
-        _dict[name] = _json
+        name = i.split('.')[0]
+        dict_[name] = json_
      
-    return(_dict)
+    return(dict_)
     
 def plot_single(df, col):
     """Plots speeds, given a test.
     """
-
     plt.rcParams['figure.figsize'] = [10, 5]
     plt.ylim(0, 140)
     
@@ -64,15 +59,14 @@ def plot_single(df, col):
     
 def transform_data(df, row):
     """Wrangle data into a better structure for boxplots.
-    Params
-    ------
-        df: pd.DataFrame, test results
-        row: str, row of interest in the data
+    
+    Parameters
+    ----------
+        df : pd.DataFrame, test results
+        row:  str, row of interest in the data
     """
 
-    lists = []
-    names = []
-    locs = []
+    lists, names, locs = [], [], []
     
     for i in df.columns:
         lists.append(df[i]['data']['download'])
@@ -85,13 +79,13 @@ def transform_data(df, row):
 
 def plot_results(df, row, scale=1):
     """Boxplots of results for comparing variances.
-    Params
-    ------
-        df: pd.DataFrame, test results
-        row: str, row of interest in the data
-        scale: scale for figsize if needed
+
+    Parameters
+    ----------
+        df : pd.DataFrame, test results
+        row : str, row of interest in the data
+        scale : scale for figsize if needed
     """
-    
     plt.rcParams['axes.facecolor'] = 'ghostwhite'
     plt.figure(figsize=(20*scale, 8*scale))
     plt.boxplot(df)
