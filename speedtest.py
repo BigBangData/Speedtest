@@ -40,6 +40,9 @@ def get_speedtestjson_():
 
         return dict_
 
+    # json.decoder.JSONDecodeError happens first time 
+    # around because Ookla wants you to read their EULA.
+    # Fix: either run manually via CMD or find automatic fix.
     except (json.decoder.JSONDecodeError,
         UnboundLocalError, ValueError) as e:
         print(e, flush=True)
@@ -152,18 +155,18 @@ def collect_info(iters, mins):
     for i in range(iters):
         # wait a pseudo-random amt of time
         secs = random.randint(10, 60*mins)
-        print(f'Test {i+1} | Waiting {secs}s...')
+        print(f'Test {i+1} | Waiting {secs}s...', flush=True)
         time.sleep(secs)
 
         # perform the test
-        print(f'Test {i+1} | Contacting speedtest.net...')
+        print(f'Test {i+1} | Contacting speedtest.net...', flush=True)
         dict_ = get_speedtestjson_()
         day_, time_ = get_datetime()
         jitter, latency = extract_ping(dict_)
         download, upload = extract_speeds(dict_)
 
         # gather the data into lists
-        print(f'Test {i+1} | Gathering data...')
+        print(f'Test {i+1} | Gathering data...', flush=True)
         times.append(time_)
         jitters.append(jitter)
         latencies.append(latency)
@@ -188,7 +191,7 @@ def collect_info(iters, mins):
 if __name__=='__main__':
     # git pull since filename is obtained from data/
     # needs to be up-to-date with any other machine test results
-    print("Make sure to `git pull` before proceeding.\n")
+    print("Make sure to `git pull` before proceeding.\n", flush=True)
 
     # check for arguments
     # can't use access_point with new setup since it can vary during testing
@@ -201,11 +204,11 @@ if __name__=='__main__':
         mins = int(sys.argv[3])
     except IndexError as e:
         print("Got IndexError. Please provide the following arguments:\
-        \nlocation, number of tests, minutes between tests.")
-        print(example)
+        \nlocation, number of tests, minutes between tests.", flush=True)
+        print(example, flush=True)
         sys.exit(1)
     except ValueError as e:
-        print(f'Got ValueError. Please provide integers.\n{example}')
+        print(f'Got ValueError. Please provide integers.\n{example}', flush=True)
         sys.exit(1)
 
     # cleanup input
