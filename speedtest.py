@@ -20,7 +20,7 @@ def get_datetime():
 
     return day_, time_
 
-def get_speedtestjson_():
+def get_speedtest_json():
     """Conduct one speedtest and return JSON with results.
     """
     # pass a subprocess command to cmd to get json
@@ -115,7 +115,6 @@ def create_filename():
 
     return lastdigit, filename
 
-
 def extract_machineinfo():
     """Use subprocess to pass a `wmic` cmd to extract 
     the machine name and info.
@@ -160,7 +159,7 @@ def collect_info(iters, mins):
 
         # perform the test
         print(f'Test {i+1} | Contacting speedtest.net...', flush=True)
-        dict_ = get_speedtestjson_()
+        dict_ = get_speedtest_json()
         day_, time_ = get_datetime()
         jitter, latency = extract_ping(dict_)
         download, upload = extract_speeds(dict_)
