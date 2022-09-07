@@ -13,7 +13,7 @@ def gather_dicts():
     # instantiate master dict
     dict_ = {}
     # get list of files
-    filelist = os.listdir('data/')
+    filelist = [x for x in os.listdir('data/') if x != 'deprecated']
     filelist.sort(key=lambda x: int(re.sub('\D', '', x)))
 
     for i in filelist:
@@ -26,29 +26,29 @@ def gather_dicts():
      
     return(dict_)
     
-def plot_single(df, col):
+def plot_speeds(df, test, iters=5, ymax=200):
     """Plots speeds, given a test.
     """
     plt.rcParams['figure.figsize'] = [10, 5]
-    plt.ylim(0, 140)
+    plt.ylim(0, ymax)
     
-    title = ' - '.join([col.upper(),
-                        df[col]['location'],
-                        df[col]['day'],
-                        df[col]['computer']])
+    title = ' - '.join([test.upper(),
+                        df[test]['location'],
+                        df[test]['day'],
+                        df[test]['computer']])
     
-    xlab = df[col]['data']['time']
-    Y1 = df[col]['data']['download']
-    Y2 = df[col]['data']['upload']
+    xlab = df[test]['data']['time']
+    Y1 = df[test]['data']['download']
+    Y2 = df[test]['data']['upload']
 
     mn = np.mean(Y1)
     plt.axhline(y=mn, color='r'
                 , linestyle='--'
                 , linewidth=1
                 , label='avg download speed'
-               )
+    )
     
-    plt.xticks(range(10), xlab, rotation='vertical')
+    plt.xticks(range(iters), xlab, rotation='vertical')
     plt.plot(Y1, label='download')
     plt.plot(Y2, label='upload')
     plt.title(title)
