@@ -26,38 +26,87 @@ def gather_dicts():
      
     return(dict_)
     
-def plot_speeds(df, test, iters=5, ymax=200):
-    """Plots speeds, given a test.
+def plot_download(df, test, iters=5, ymin=100, ymax=200):
+    """Plots speeds, given a single test. 
+    
+    Notes
+    -----
+        - a single test is a number of speed tests
+        - defaults to 5 tests (iterations)
+        - ymin & ymax are download min/max speeds (Mbps)
     """
     plt.rcParams['figure.figsize'] = [10, 5]
-    plt.ylim(0, ymax)
+    plt.ylim(ymin, ymax)
     
-    title = ' - '.join([test.upper(),
-                        df[test]['location'],
-                        df[test]['day'],
-                        df[test]['computer']])
+    title = ' - '.join([
+        test.upper(), df[test]['location'], 
+        df[test]['day'], df[test]['computer']
+    ])
     
     xlab = df[test]['data']['time']
-    Y1 = df[test]['data']['download']
-    Y2 = df[test]['data']['upload']
+    series1 = df[test]['data']['download']
 
-    mn = np.mean(Y1)
-    plt.axhline(y=mn, color='r'
+    mn = np.mean(series1)
+    plt.axhline(y=mn, color='b'
                 , linestyle='--'
                 , linewidth=1
-                , label='avg download speed'
+                , label='Avg. Download'
     )
     
     plt.xticks(range(iters), xlab, rotation='vertical')
-    plt.plot(Y1, label='download')
-    plt.plot(Y2, label='upload')
+    plt.plot(series1, label='Download', color='b')
     plt.title(title)
     plt.legend(bbox_to_anchor=(1, 1), loc='upper left')
     
     plt.ylabel('Mbps')
     plt.show()
+
+def compare_downloads(df, tests, iters=5, ymin=100, ymax=200):
+    """Compare download speeds, given two tests.
     
-def transform_data(df, row):
+    Notes
+    -----
+        - a single test is a number of speed tests
+        - defaults to 5 tests (iterations)
+        - ymin & ymax are download min/max speeds (Mbps)
+    """
+    
+    fig, ax = plt.subplots(1, 2)
+    fig = plt.gcf()
+    fig.set_size_inches(15, 5)
+
+    def plot_test(test, axis, legend):
+        title = ' - '.join([
+            test.upper(), df[test]['location'], 
+            df[test]['day'], df[test]['computer']
+        ])
+        
+        xlab = df[test]['data']['time']
+        series = df[test]['data']['download']
+        avg = np.mean(series) 
+        axis.set_ylim(ymin, ymax)
+        axis.set_ylabel('Mbps')
+        axis.set_xticks(range(iters))
+        axis.set_xticklabels(xlab, rotation='vertical')
+        axis.axhline(
+            y=avg
+            , color='b'
+            , linestyle='--'
+            , linewidth=1
+            , label='Avg. Download'
+        )
+        
+        axis.plot(series, label='Download', color='b')
+        axis.set_title(title)
+        if legend:
+            axis.legend(bbox_to_anchor=(1, 1), loc='upper left')
+    
+    plot_test(tests[0], ax[0], legend=0)
+    plot_test(tests[1], ax[1], legend=1)
+        
+    plt.show()
+    
+def prep_boxplot(df, row):
     """Wrangle data into a better structure for boxplots.
     
     Parameters
@@ -77,7 +126,7 @@ def transform_data(df, row):
     
     return(data)
 
-def plot_results(df, row, scale=1):
+def plot_boxplots(df, row, scale=1):
     """Boxplots of results for comparing variances.
 
     Parameters
@@ -89,7 +138,7 @@ def plot_results(df, row, scale=1):
     plt.rcParams['axes.facecolor'] = 'ghostwhite'
     plt.figure(figsize=(20*scale, 8*scale))
     plt.boxplot(df)
-    plt.title(" ".join(["Speeds Given", row]))
+    plt.title(" ".join(["Speeds By", row]))
     plt.ylabel("Mbps", fontsize=16)
     plt.yticks(fontsize=12)
     plt.xticks(range(1, df.shape[1]+1), 
